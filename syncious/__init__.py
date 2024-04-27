@@ -1,3 +1,4 @@
+import json
 import re
 from typing import cast
 from urllib.parse import unquote
@@ -51,8 +52,8 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
             raise NotAuthorizedException()
 
         try:
-            parse_session = eval(unquote(token))
-        except Exception:
+            parse_session = json.loads(unquote(token))
+        except json.JSONDecodeError:
             raise NotAuthorizedException()
 
         if "session" not in parse_session:
