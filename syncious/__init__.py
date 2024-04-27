@@ -7,7 +7,7 @@ import aiohttp
 import aiohttp.client_exceptions
 import tortoise
 import tortoise.exceptions
-from litestar import Controller, Litestar, Request, get, post
+from litestar import Controller, Litestar, Request, delete, get, post
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
 from litestar.exceptions import NotAuthorizedException, ValidationException
@@ -95,6 +95,15 @@ class VideoController(Controller):
             progresses.append(ProgressModel(time=result.time, video_id=result.video_id))
 
         return progresses
+
+    @delete()
+    async def delete_progress(
+        self, request: Request[str, str, State], video_ids: str
+    ) -> None:
+        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_ids):
+            raise ValidationException()
+
+        await VideosTable.filter(video_id=video_ids, username=request.user).delete()
 
     @post()
     async def save_progress(
