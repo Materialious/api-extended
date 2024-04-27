@@ -10,7 +10,7 @@ from litestar.datastructures import State
 from litestar.exceptions import NotAuthorizedException, NotFoundException
 from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
 from litestar.middleware.base import DefineMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.engine.url import URL
 from tortoise import Tortoise, connections
 
@@ -59,30 +59,36 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
         return AuthenticationResult(user=result[0]["email"], auth=token)
 
 
-class ProgressModel(BaseModel):
+class SaveProgressModel(BaseModel):
     time: float
 
 
+class ProgressModel(SaveProgressModel):
+    video_id: str = Field(pattern=r"[a-zA-Z0-9_-]{11}")
+
+
 class VideoController(Controller):
-    path = "/video/{video_id:str}"
+    path = "/video/{video_ids:str}"
 
     @get()
     async def progress(
-        self, request: Request[str, str, State], video_id: str
-    ) -> ProgressModel:
-        try:
-            result = await VideosTable.get(video_id=video_id, username=request.user)
-        except tortoise.exceptions.DoesNotExist:
-            raise NotFoundException()
+        self, request: Request[str, str, State], video_ids: str
+    ) -> list[ProgressModel]:
+        results = await VideosTable.filter(
+            video_id__in=video_ids.split(","), username=request.user
+        ).limit(100)
+        progresses = []
+        for result in results:
+            progresses.append(ProgressModel(time=result.time, video_id=result.video_id))
 
-        return ProgressModel(time=result.time)
+        return progresses
 
     @post()
     async def save_progress(
-        self, request: Request[str, str, State], data: ProgressModel, video_id: str
+        self, request: Request[str, str, State], data: SaveProgressModel, video_ids: str
     ) -> None:
         await VideosTable.update_or_create(
-            video_id=video_id, username=request.user, defaults={"time": data.time}
+            video_id=video_ids, username=request.user, defaults={"time": data.time}
         )
 
 

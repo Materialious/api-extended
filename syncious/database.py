@@ -3,7 +3,7 @@ from tortoise.models import Model
 
 
 class VideosTable(Model):
-    video_id = fields.CharField(max_length=12, null=False)
+    video_id = fields.CharField(max_length=11, null=False)
     time = fields.IntField(null=False)
     username = fields.CharField(max_length=240, null=False)
 
