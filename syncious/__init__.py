@@ -1,3 +1,4 @@
+import re
 from typing import cast
 from urllib.parse import unquote
 
@@ -8,7 +9,7 @@ import tortoise.exceptions
 from litestar import Controller, Litestar, Request, get, post
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
-from litestar.exceptions import NotAuthorizedException, NotFoundException
+from litestar.exceptions import NotAuthorizedException, ValidationException
 from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
 from litestar.middleware.base import DefineMiddleware
 from pydantic import BaseModel, Field
@@ -17,6 +18,10 @@ from tortoise import Tortoise, connections
 
 from syncious.database import VideosTable
 from syncious.env import SETTINGS
+
+YOUTUBE_ID_REGEX = r"[a-zA-Z0-9_-]{11}"
+
+YOUTUBE_ID_REGEX_COMPLIED = re.compile(YOUTUBE_ID_REGEX)
 
 
 class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
@@ -94,6 +99,10 @@ class VideoController(Controller):
     async def save_progress(
         self, request: Request[str, str, State], data: SaveProgressModel, video_ids: str
     ) -> None:
+
+        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_ids):
+            raise ValidationException()
+
         await VideosTable.update_or_create(
             video_id=video_ids, username=request.user, defaults={"time": data.time}
         )
