@@ -13,6 +13,7 @@ from litestar.exceptions import NotAuthorizedException, ValidationException
 from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
 from litestar.middleware.base import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
+from litestar.openapi.plugins import ScalarRenderPlugin
 from litestar.openapi.spec import Components, ExternalDocumentation, SecurityScheme
 from pydantic import BaseModel
 from sqlalchemy.engine.url import URL
@@ -81,14 +82,16 @@ class ProgressModel(SaveProgressModel):
 
 
 class VideoController(Controller):
-    path = "/video/{video_ids:str}"
+    path = "/video/{video_id:str}"
 
-    @get()
+    @get(
+        description="You can pass video IDs comma separated up to 100 IDs to get multiple video progresses."
+    )
     async def progress(
-        self, request: Request[str, str, State], video_ids: str
+        self, request: Request[str, str, State], video_id: str
     ) -> list[ProgressModel]:
         results = await VideosTable.filter(
-            video_id__in=video_ids.split(","), username=request.user
+            video_id__in=video_id.split(","), username=request.user
         ).limit(100)
 
         progresses = []
@@ -99,23 +102,23 @@ class VideoController(Controller):
 
     @delete()
     async def delete_progress(
-        self, request: Request[str, str, State], video_ids: str
+        self, request: Request[str, str, State], video_id: str
     ) -> None:
-        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_ids):
+        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_id):
             raise ValidationException()
 
-        await VideosTable.filter(video_id=video_ids, username=request.user).delete()
+        await VideosTable.filter(video_id=video_id, username=request.user).delete()
 
     @post()
     async def save_progress(
-        self, request: Request[str, str, State], data: SaveProgressModel, video_ids: str
+        self, request: Request[str, str, State], data: SaveProgressModel, video_id: str
     ) -> None:
 
-        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_ids):
+        if not YOUTUBE_ID_REGEX_COMPLIED.fullmatch(video_id):
             raise ValidationException()
 
         await VideosTable.update_or_create(
-            video_id=video_ids, username=request.user, defaults={"time": data.time}
+            video_id=video_id, username=request.user, defaults={"time": data.time}
         )
 
 
@@ -163,6 +166,7 @@ app = Litestar(
             description="How to generate authorization tokens for Invidious.",
         ),
         security=[{"BearerToken": []}],
+        render_plugins=[ScalarRenderPlugin()],
         components=Components(
             security_schemes={
                 "BearerToken": SecurityScheme(
