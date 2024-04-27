@@ -11,8 +11,8 @@ class VideosTable(Model):
         return f"{self.video_id} at {self.time} for {self.username}"
 
     class Meta:
-        # Shouldn't ever conflict with a table in Invidious.
-        table = "wp_syncious_videos"
+        # Shouldn't ever conflict with a table in Invidious (Unless...)
+        table = "wardpearce_syncious_videos"
         unique_together = (
             (
                 "video_id",

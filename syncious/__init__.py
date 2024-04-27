@@ -1,9 +1,9 @@
-import base64
-import binascii
 from typing import cast
 from urllib.parse import unquote
 
 import aiohttp
+import tortoise
+import tortoise.exceptions
 from litestar import Controller, Litestar, Request, get, post
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
@@ -24,10 +24,7 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
     ) -> AuthenticationResult:
         authorization = connection.headers.get("Authorization")
 
-        if not authorization:
-            raise NotAuthorizedException()
-
-        if not authorization.startswith(("Bearer ", "bearer")):
+        if not authorization or not authorization.startswith(("Bearer ", "bearer ")):
             raise NotAuthorizedException()
 
         token = authorization.removeprefix("Bearer ").removeprefix("bearer ")
@@ -73,9 +70,9 @@ class VideoController(Controller):
     async def progress(
         self, request: Request[str, str, State], video_id: str
     ) -> ProgressModel:
-        result = await VideosTable.get(video_id=video_id, username=request.user)
-
-        if not result:
+        try:
+            result = await VideosTable.get(video_id=video_id, username=request.user)
+        except tortoise.exceptions.DoesNotExist:
             raise NotFoundException()
 
         return ProgressModel(time=result.time)
