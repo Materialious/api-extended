@@ -13,6 +13,10 @@ class PostgreSettings(BaseModel):
 class Settings(BaseSettings):
     model_config: SettingsConfigDict = {"env_prefix": "syncious_"}
 
+    debug: bool = False
+
+    invidious_instance: str
+
     postgre: PostgreSettings
 
 

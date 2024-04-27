@@ -1,11 +1,65 @@
-from litestar import Controller, Litestar, get, post
-from litestar.exceptions import NotFoundException
+import base64
+import binascii
+from typing import cast
+from urllib.parse import unquote
+
+import aiohttp
+from litestar import Controller, Litestar, Request, get, post
+from litestar.connection import ASGIConnection
+from litestar.datastructures import State
+from litestar.exceptions import NotAuthorizedException, NotFoundException
+from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
+from litestar.middleware.base import DefineMiddleware
 from pydantic import BaseModel
 from sqlalchemy.engine.url import URL
-from tortoise import Tortoise
+from tortoise import Tortoise, connections
 
 from syncious.database import VideosTable
 from syncious.env import SETTINGS
+
+
+class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
+    async def authenticate_request(
+        self, connection: ASGIConnection
+    ) -> AuthenticationResult:
+        authorization = connection.headers.get("Authorization")
+
+        if not authorization:
+            raise NotAuthorizedException()
+
+        if not authorization.startswith(("Bearer ", "bearer")):
+            raise NotAuthorizedException()
+
+        token = authorization.removeprefix("Bearer ").removeprefix("bearer ")
+
+        http = cast(aiohttp.ClientSession, connection.app.state.http)
+
+        # Lets not rewrite how Invidious validates tokens
+        resp = await http.get(
+            f"{SETTINGS.invidious_instance}/api/v1/auth/feed",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        if resp.status != 200:
+            raise NotAuthorizedException()
+
+        try:
+            parse_session = eval(unquote(token))
+        except Exception:
+            raise NotAuthorizedException()
+
+        if "session" not in parse_session:
+            raise NotAuthorizedException()
+
+        # Needed to get username.
+        result = await connections.get("default").execute_query_dict(
+            "SELECT email FROM session_ids WHERE ID = $1",
+            [parse_session["session"]],
+        )
+
+        if not result:
+            raise NotAuthorizedException()
+
+        return AuthenticationResult(user=result[0]["email"], auth=token)
 
 
 class ProgressModel(BaseModel):
@@ -16,8 +70,10 @@ class VideoController(Controller):
     path = "/video/{video_id:str}"
 
     @get()
-    async def progress(self, video_id: str) -> ProgressModel:
-        result = await VideosTable.get(video_id=video_id, email="wardpearce@pm.me")
+    async def progress(
+        self, request: Request[str, str, State], video_id: str
+    ) -> ProgressModel:
+        result = await VideosTable.get(video_id=video_id, username=request.user)
 
         if not result:
             raise NotFoundException()
@@ -25,9 +81,11 @@ class VideoController(Controller):
         return ProgressModel(time=result.time)
 
     @post()
-    async def save_progress(self, data: ProgressModel, video_id: str) -> None:
+    async def save_progress(
+        self, request: Request[str, str, State], data: ProgressModel, video_id: str
+    ) -> None:
         await VideosTable.update_or_create(
-            video_id=video_id, email="wardpearce@pm.me", defaults={"time": data.time}
+            video_id=video_id, username=request.user, defaults={"time": data.time}
         )
 
 
@@ -50,9 +108,23 @@ async def close_database() -> None:
     await Tortoise.close_connections()
 
 
+async def init_aiohttp(app: Litestar) -> None:
+    http = getattr(app.state, "http", None)
+    if http is None:
+        app.state.http = aiohttp.ClientSession(
+            # Don't validate SSL if in debug mode.
+            connector=aiohttp.TCPConnector(verify_ssl=False) if SETTINGS.debug else None
+        )
+
+
+async def close_aiohttp(app: Litestar) -> None:
+    await app.state.http.close()
+
+
 app = Litestar(
+    debug=SETTINGS.debug,
     route_handlers=[VideoController],
-    on_startup=[init_database],
-    on_shutdown=[close_database],
-    debug=True,
+    on_startup=[init_database, init_aiohttp],
+    on_shutdown=[close_database, close_aiohttp],
+    middleware=[DefineMiddleware(BasicAuthMiddleware)],
 )
