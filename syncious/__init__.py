@@ -75,7 +75,7 @@ class SaveProgressModel(BaseModel):
 
 
 class ProgressModel(SaveProgressModel):
-    video_id: str = Field(pattern=r"[a-zA-Z0-9_-]{11}")
+    video_id: str
 
 
 class VideoController(Controller):
