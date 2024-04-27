@@ -74,20 +74,10 @@ class VideoController(Controller):
     async def progress(
         self, request: Request[str, str, State], video_ids: str
     ) -> list[ProgressModel]:
-        limit = 100
-        offset = 0
+        results = await VideosTable.filter(
+            video_id__in=video_ids.split(","), username=request.user
+        ).limit(100)
 
-        page = request.query_params.get("page")
-        if page is not None and page.isdigit():
-            offset = limit * int(page)
-
-        results = (
-            await VideosTable.filter(
-                video_id__in=video_ids.split(","), username=request.user
-            )
-            .limit(limit)
-            .offset(offset)
-        )
         progresses = []
         for result in results:
             progresses.append(ProgressModel(time=result.time, video_id=result.video_id))
