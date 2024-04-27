@@ -2,6 +2,7 @@ from typing import cast
 from urllib.parse import unquote
 
 import aiohttp
+import aiohttp.client_exceptions
 import tortoise
 import tortoise.exceptions
 from litestar import Controller, Litestar, Request, get, post
@@ -32,10 +33,15 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
         http = cast(aiohttp.ClientSession, connection.app.state.http)
 
         # Lets not rewrite how Invidious validates tokens
-        resp = await http.get(
-            f"{SETTINGS.invidious_instance}/api/v1/auth/feed",
-            headers={"Authorization": f"Bearer {token}"},
-        )
+
+        try:
+            resp = await http.get(
+                f"{SETTINGS.invidious_instance}/api/v1/auth/feed",
+                headers={"Authorization": f"Bearer {token}"},
+            )
+        except aiohttp.client_exceptions.ClientError:
+            raise NotAuthorizedException()
+
         if resp.status != 200:
             raise NotAuthorizedException()
 
