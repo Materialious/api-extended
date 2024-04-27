@@ -1,3 +1,4 @@
+import importlib.metadata
 import json
 import re
 from typing import cast
@@ -5,15 +6,15 @@ from urllib.parse import unquote
 
 import aiohttp
 import aiohttp.client_exceptions
-import tortoise
-import tortoise.exceptions
 from litestar import Controller, Litestar, Request, delete, get, post
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
 from litestar.exceptions import NotAuthorizedException, ValidationException
 from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
 from litestar.middleware.base import DefineMiddleware
-from pydantic import BaseModel, Field
+from litestar.openapi import OpenAPIConfig
+from litestar.openapi.spec import Components, ExternalDocumentation, SecurityScheme
+from pydantic import BaseModel
 from sqlalchemy.engine.url import URL
 from tortoise import Tortoise, connections
 
@@ -153,7 +154,25 @@ async def close_aiohttp(app: Litestar) -> None:
 app = Litestar(
     debug=SETTINGS.debug,
     route_handlers=[VideoController],
+    openapi_config=OpenAPIConfig(
+        title="Syncious",
+        version=importlib.metadata.version("syncious"),
+        description="Sync your watch progress between Invidious sessions.",
+        external_docs=ExternalDocumentation(
+            url="https://docs.invidious.io/api/authenticated-endpoints/",
+            description="How to generate authorization tokens for Invidious.",
+        ),
+        security=[{"BearerToken": []}],
+        components=Components(
+            security_schemes={
+                "BearerToken": SecurityScheme(
+                    type="http",
+                    scheme="bearer",
+                )
+            },
+        ),
+    ),
     on_startup=[init_database, init_aiohttp],
     on_shutdown=[close_database, close_aiohttp],
-    middleware=[DefineMiddleware(BasicAuthMiddleware)],
+    middleware=[DefineMiddleware(BasicAuthMiddleware, exclude=["/schema"])],
 )
