@@ -9,6 +9,9 @@ Sync your watch progress between Invidious sessions.
 - Auth caching.
 - [API Documentation](https://syncious.materialio.us/schema)
 
+## Auth
+Syncious uses Invidious SIDs or tokens to validate requests. These should be passed as a Bearer token. If using Invidious tokens, it must have the `GET:feed` scope.
+
 ## Supported clients
 - [Materialious](https://github.com/WardPearce/Materialious)
     -  Modern material design for Invidious. 
