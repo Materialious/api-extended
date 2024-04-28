@@ -9,6 +9,7 @@ import aiohttp
 import aiohttp.client_exceptions
 from aiocron import crontab
 from litestar import Controller, Litestar, Request, delete, get, post
+from litestar.config.cors import CORSConfig
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
 from litestar.exceptions import NotAuthorizedException, ValidationException
@@ -232,6 +233,10 @@ class ScalarRenderPluginRouteFix(ScalarRenderPlugin):
 app = Litestar(
     debug=SETTINGS.debug,
     route_handlers=[VideoController, delete_all_watch],
+    cors_config=CORSConfig(
+        allow_origins=SETTINGS.allowed_origins,
+        allow_methods=["OPTIONS", "GET", "DELETE", "POST"],
+    ),
     openapi_config=OpenAPIConfig(
         title="Syncious",
         version=importlib.metadata.version("syncious"),

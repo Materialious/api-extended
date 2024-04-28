@@ -23,6 +23,7 @@ services:
       - 3004:8000
     environment:
       syncious_postgre: '{"host": "invidious-db", "port": 5432, "database": "invidious", "user": "kemal", "password": "kemal"}'
+      syncious_allowed_origins: '["https://materialios.localhost"]'
       syncious_debug: false
 
       # No trailing backslashes!
