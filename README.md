@@ -7,7 +7,7 @@ Sync your watch progress between Invidious sessions.
 - Doesn't rewrite Invidious auth.
 - Doesn't modify any existing Invidious records.
 - Auth caching.
-- [API Documentation](syncious.materialio.us/schema)
+- [API Documentation](https://syncious.materialio.us/schema)
 
 ## Supported clients
 - [Materialious](https://github.com/WardPearce/Materialious)
