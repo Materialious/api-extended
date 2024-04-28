@@ -21,6 +21,7 @@ tortoise-orm = {extras = ["asyncpg"], version = "^0.20.1"}
 sqlalchemy = "^2.0.29"
 uvicorn = "^0.29.0"
 aiohttp = "^3.9.5"
+aiocron = "^1.8"
 
 [build-system]
 requires = ["poetry-core"]

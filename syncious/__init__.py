@@ -1,11 +1,13 @@
 import importlib.metadata
 import json
 import re
+from datetime import timezone
 from typing import cast
 from urllib.parse import unquote
 
 import aiohttp
 import aiohttp.client_exceptions
+from aiocron import crontab
 from litestar import Controller, Litestar, Request, delete, get, post
 from litestar.connection import ASGIConnection
 from litestar.datastructures import State
@@ -150,6 +152,45 @@ async def delete_all_watch(request: Request[str, str, State]) -> None:
     await VideosTable.filter(username=request.user).delete()
 
 
+async def crontab_check_for_deleted() -> None:
+    """Background task to check if a user has deleted their Invidious account."""
+
+    results = await connections.get("default").execute_query_dict(
+        "SELECT email FROM users"
+    )
+
+    invidious_usernames: list[str] = [result["email"] for result in results]
+
+    syncious_usernames = (
+        await VideosTable.filter().distinct().values_list("username", flat=True)
+    )
+
+    to_delete = []
+
+    for syncious_username in syncious_usernames:
+        if syncious_username in invidious_usernames:
+            continue
+
+        to_delete.append(syncious_username)
+
+    if to_delete:
+        await VideosTable.filter(username__in=to_delete).delete()
+
+
+async def start_crontab(app: Litestar) -> None:
+    crontab_state = getattr(app.state, "crontab", None)
+    if crontab_state is None:
+        app.state.crontab = crontab(
+            "0 */1 * * *", start=False, tz=timezone.utc, func=crontab_check_for_deleted
+        )
+
+        app.state.crontab.start()
+
+
+async def stop_crontab(app: Litestar) -> None:
+    app.state.crontab.stop()
+
+
 async def init_database() -> None:
     await Tortoise.init(
         db_url=URL.create(
@@ -213,7 +254,7 @@ app = Litestar(
             },
         ),
     ),
-    on_startup=[init_database, init_aiohttp],
-    on_shutdown=[close_database, close_aiohttp],
+    on_startup=[init_database, init_aiohttp, start_crontab],
+    on_shutdown=[close_database, close_aiohttp, stop_crontab],
     middleware=[DefineMiddleware(BasicAuthMiddleware, exclude=["/schema"])],
 )
