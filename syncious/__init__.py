@@ -27,9 +27,7 @@ from tortoise import Tortoise, connections
 from syncious.database import VideosTable
 from syncious.env import SETTINGS
 
-YOUTUBE_ID_REGEX = r"[a-zA-Z0-9_-]{11}"
-
-YOUTUBE_ID_REGEX_COMPLIED = re.compile(YOUTUBE_ID_REGEX)
+YOUTUBE_ID_REGEX_COMPLIED = re.compile(r"[a-zA-Z0-9_-]{11}")
 
 
 class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
@@ -43,10 +41,15 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
 
         token = authorization.removeprefix("Bearer ").removeprefix("bearer ")
 
+        cache = connection.app.stores.get("auth_cache")
+
+        cached_email = await cache.get(token)
+        if cached_email is not None:
+            return AuthenticationResult(user=cached_email.decode(), auth=token)
+
         http = cast(aiohttp.ClientSession, connection.app.state.http)
 
         # Lets not rewrite how Invidious validates tokens
-
         try:
             resp = await http.get(
                 f"{SETTINGS.invidious_instance}/api/v1/auth/feed",
@@ -74,6 +77,8 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
 
         if not result:
             raise NotAuthorizedException()
+
+        await cache.set(token, result[0]["email"], 60)
 
         return AuthenticationResult(user=result[0]["email"], auth=token)
 
