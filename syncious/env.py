@@ -16,8 +16,9 @@ class Settings(BaseSettings):
     debug: bool = False
 
     invidious_instance: str
-
     production_instance: str
+
+    allowed_origins: list[str]
 
     postgre: PostgreSettings
 
