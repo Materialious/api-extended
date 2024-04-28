@@ -49,11 +49,20 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
 
         http = cast(aiohttp.ClientSession, connection.app.state.http)
 
+        cooke_token = False
+        try:
+            parse_session = json.loads(unquote(token))
+        except json.JSONDecodeError:
+            cooke_token = True
+
         # Lets not rewrite how Invidious validates tokens
         try:
             resp = await http.get(
                 f"{SETTINGS.invidious_instance}/api/v1/auth/feed",
-                headers={"Authorization": f"Bearer {token}"},
+                headers=(
+                    {"Authorization": f"Bearer {token}"} if not cooke_token else None
+                ),
+                cookies={"SID": token} if cooke_token else None,
             )
         except aiohttp.client_exceptions.ClientError:
             raise NotAuthorizedException()
@@ -61,18 +70,22 @@ class BasicAuthMiddleware(AbstractAuthenticationMiddleware):
         if resp.status != 200:
             raise NotAuthorizedException()
 
-        try:
-            parse_session = json.loads(unquote(token))
-        except json.JSONDecodeError:
-            raise NotAuthorizedException()
+        session_id = ""
+        if not cooke_token:
+            if "session" not in parse_session:
+                raise NotAuthorizedException()
 
-        if "session" not in parse_session:
+            session_id = parse_session["session"]
+        else:
+            session_id = token
+
+        if not session_id:
             raise NotAuthorizedException()
 
         # Needed to get username.
         result = await connections.get("default").execute_query_dict(
             "SELECT email FROM session_ids WHERE ID = $1",
-            [parse_session["session"]],
+            [session_id],
         )
 
         if not result:
