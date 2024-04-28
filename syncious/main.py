@@ -255,6 +255,7 @@ app = Litestar(
                 "BearerToken": SecurityScheme(
                     type="http",
                     scheme="bearer",
+                    description="This should be your Invidious token or SID",
                 )
             },
         ),
