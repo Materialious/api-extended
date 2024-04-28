@@ -145,6 +145,11 @@ class VideoController(Controller):
         )
 
 
+@delete("/videos", description="Deletes all watch progress for a user.")
+async def delete_all_watch(request: Request[str, str, State]) -> None:
+    await VideosTable.filter(username=request.user).delete()
+
+
 async def init_database() -> None:
     await Tortoise.init(
         db_url=URL.create(
@@ -185,7 +190,7 @@ class ScalarRenderPluginRouteFix(ScalarRenderPlugin):
 
 app = Litestar(
     debug=SETTINGS.debug,
-    route_handlers=[VideoController],
+    route_handlers=[VideoController, delete_all_watch],
     openapi_config=OpenAPIConfig(
         title="Syncious",
         version=importlib.metadata.version("syncious"),
