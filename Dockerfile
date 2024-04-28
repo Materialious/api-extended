@@ -9,4 +9,4 @@ RUN poetry install
 
 COPY ./syncious /app
 
-EXPOSE 8000
+EXPOSE 80

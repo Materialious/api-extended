@@ -20,7 +20,7 @@ services:
     image: wardpearce/syncious:latest
     restart: unless-stopped
     ports:
-      - 3004:8000
+      - 3004:80
     environment:
       syncious_postgre: '{"host": "invidious-db", "port": 5432, "database": "invidious", "user": "kemal", "password": "kemal"}'
       syncious_allowed_origins: '["https://materialios.localhost"]'

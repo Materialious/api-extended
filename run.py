@@ -1,6 +1,6 @@
 import uvicorn
 
-from syncious import app
+from syncious.main import app
 
 
 def main() -> None:
