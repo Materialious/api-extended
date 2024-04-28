@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 
     invidious_instance: str
 
+    production_instance: str
+
     postgre: PostgreSettings
 
 

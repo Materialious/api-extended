@@ -14,7 +14,12 @@ from litestar.middleware import AbstractAuthenticationMiddleware, Authentication
 from litestar.middleware.base import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import ScalarRenderPlugin
-from litestar.openapi.spec import Components, ExternalDocumentation, SecurityScheme
+from litestar.openapi.spec import (
+    Components,
+    ExternalDocumentation,
+    SecurityScheme,
+    Server,
+)
 from pydantic import BaseModel
 from sqlalchemy.engine.url import URL
 from tortoise import Tortoise, connections
@@ -154,6 +159,12 @@ async def close_aiohttp(app: Litestar) -> None:
     await app.state.http.close()
 
 
+class ScalarRenderPluginRouteFix(ScalarRenderPlugin):
+    @staticmethod
+    def get_openapi_json_route(request: Request) -> str:
+        return f"{SETTINGS.production_instance}/schema/openapi.json"
+
+
 app = Litestar(
     debug=SETTINGS.debug,
     route_handlers=[VideoController],
@@ -166,7 +177,10 @@ app = Litestar(
             description="How to generate authorization tokens for Invidious.",
         ),
         security=[{"BearerToken": []}],
-        render_plugins=[ScalarRenderPlugin()],
+        render_plugins=[ScalarRenderPluginRouteFix()],
+        servers=[
+            Server(SETTINGS.production_instance, "Production API path for Syncious.")
+        ],
         components=Components(
             security_schemes={
                 "BearerToken": SecurityScheme(
