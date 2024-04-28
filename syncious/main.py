@@ -236,6 +236,8 @@ app = Litestar(
     cors_config=CORSConfig(
         allow_origins=SETTINGS.allowed_origins,
         allow_methods=["OPTIONS", "GET", "DELETE", "POST"],
+        allow_credentials=True,
+        allow_headers=["Authorization", "Content-type"],
     ),
     openapi_config=OpenAPIConfig(
         title="Syncious",
