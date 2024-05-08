@@ -32,4 +32,8 @@ services:
       # No trailing backslashes!
       syncious_invidious_instance: "https://invidious.example.com"
       syncious_production_instance: "https://syncious.example.com"
+
+      # You can read more about optimizing Syncious here
+      # https://hub.docker.com/r/tiangolo/uvicorn-gunicorn
+      WEB_CONCURRENCY: 4
 ```
