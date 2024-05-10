@@ -202,7 +202,7 @@ async def init_database() -> None:
             port=SETTINGS.postgre.port,
             database=SETTINGS.postgre.database,
         ).render_as_string(hide_password=False),
-        modules={"models": ["syncious.database"]},
+        modules={"models": ["api_extended.database"]},
     )
     await Tortoise.generate_schemas()
 
@@ -240,8 +240,8 @@ app = Litestar(
         allow_headers=["Authorization", "Content-type"],
     ),
     openapi_config=OpenAPIConfig(
-        title="Syncious",
-        version=importlib.metadata.version("syncious"),
+        title="Invidious API extended",
+        version=importlib.metadata.version("api_extended"),
         description="Sync your watch progress between Invidious sessions.",
         external_docs=ExternalDocumentation(
             url="https://docs.invidious.io/api/authenticated-endpoints/",
@@ -250,7 +250,9 @@ app = Litestar(
         security=[{"BearerToken": []}],
         render_plugins=[ScalarRenderPluginRouteFix()],
         servers=[
-            Server(SETTINGS.production_instance, "Production API path for Syncious.")
+            Server(
+                SETTINGS.production_instance, "Production API path for API extended."
+            )
         ],
         components=Components(
             security_schemes={

@@ -11,7 +11,7 @@ class PostgreSettings(BaseModel):
 
 
 class Settings(BaseSettings):
-    model_config: SettingsConfigDict = {"env_prefix": "syncious_"}
+    model_config: SettingsConfigDict = {"env_prefix": "api_extended_"}
 
     debug: bool = False
 

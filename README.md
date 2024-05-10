@@ -20,19 +20,19 @@ API-Extended uses Invidious SIDs or tokens to validate requests. These should be
 ## Deployment
 ```yaml
 services:
-  syncious:
+  api_extended:
     image: invidious_api_extended:latest
     restart: unless-stopped
     ports:
       - 3004:80
     environment:
-      syncious_postgre: '{"host": "invidious-db", "port": 5432, "database": "invidious", "user": "kemal", "password": "kemal"}'
-      syncious_allowed_origins: '["https://materialios.localhost"]'
-      syncious_debug: false
+      api_extended_postgre: '{"host": "invidious-db", "port": 5432, "database": "invidious", "user": "kemal", "password": "kemal"}'
+      api_extended_allowed_origins: '["https://materialios.localhost"]'
+      api_extended_debug: false
 
       # No trailing backslashes!
-      syncious_invidious_instance: "https://invidious.example.com"
-      syncious_production_instance: "https://extended-api.example.com"
+      api_extended_invidious_instance: "https://invidious.example.com"
+      api_extended_production_instance: "https://extended-api.example.com"
 
       # You can read more about optimizing Syncious here
       # https://hub.docker.com/r/tiangolo/uvicorn-gunicorn
