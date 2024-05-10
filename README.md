@@ -21,7 +21,7 @@ API-Extended uses Invidious SIDs or tokens to validate requests. These should be
 ```yaml
 services:
   api_extended:
-    image: invidious_api_extended:latest
+    image: wardpearce/invidious_api_extended:latest
     restart: unless-stopped
     ports:
       - 3004:80
