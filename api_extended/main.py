@@ -27,8 +27,8 @@ from pydantic import BaseModel
 from sqlalchemy.engine.url import URL
 from tortoise import Tortoise, connections
 
-from syncious.database import VideosTable
-from syncious.env import SETTINGS
+from api_extended.database import VideosTable
+from api_extended.env import SETTINGS
 
 YOUTUBE_ID_REGEX_COMPLIED = re.compile(r"[a-zA-Z0-9_-]{11}")
 

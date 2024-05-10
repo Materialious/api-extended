@@ -7,6 +7,6 @@ RUN pip3 install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-COPY ./syncious /app
+COPY ./api_extended /app
 
 EXPOSE 80

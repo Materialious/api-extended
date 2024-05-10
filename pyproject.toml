@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "syncious"
-version = "0.0.1"
+name = "api_extended"
+version = "0.0.2"
 description = ""
 authors = ["WardPearce <wardpearce@pm.me>"]
 readme = "README.md"
 packages = [
-    {include = "*", from = "syncious"},
+    {include = "*", from = "api_extended"},
     {include = "run.py"}
 ]
 
