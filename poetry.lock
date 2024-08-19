@@ -2379,13 +2379,13 @@ docstring-parser = ">=0.12"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.21.5"
+version = "0.21.6"
 description = "Easy async ORM for python, built with relations in mind"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "tortoise_orm-0.21.5-py3-none-any.whl", hash = "sha256:a9657568b31c5ee24c0596d531fd51210c75855551c4c18b376e8a24f33b3e1d"},
-    {file = "tortoise_orm-0.21.5.tar.gz", hash = "sha256:cccd23178380a325890e10742c74250722e92e4aa088fd7ebf863c3475a4f1ef"},
+    {file = "tortoise_orm-0.21.6-py3-none-any.whl", hash = "sha256:98fcf07dce3396075eac36b0d2b14d2267ff875d32455e03ee15e38de2f138df"},
+    {file = "tortoise_orm-0.21.6.tar.gz", hash = "sha256:0fbc718001647bf282c01eaaa360f94f1432c9281701244180703d48d58a88ec"},
 ]
 
 [package.dependencies]
@@ -2880,4 +2880,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "037656866afc3d2962baaef8a89110e5bbbb15a409cdfdf876bd62d7c4e0b5ae"
+content-hash = "8e724a386cd0c6395ace28a59376c911e9d8e9aa3b74619589864565331d0a95"
