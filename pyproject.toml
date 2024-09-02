@@ -14,7 +14,7 @@ server = "run:main"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-litestar = {extras = ["full"], version = "^2.10.0"}
+litestar = {extras = ["full"], version = "^2.11.0"}
 pydantic = "^2.8.2"
 pydantic-settings = "^2.4.0"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.21.6"}
