@@ -18,7 +18,7 @@ litestar = {extras = ["full"], version = "^2.12.1"}
 pydantic = "^2.9.1"
 pydantic-settings = "^2.5.2"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.21.6"}
-sqlalchemy = "^2.0.34"
+sqlalchemy = "^2.0.35"
 uvicorn = "^0.30.6"
 aiohttp = "^3.10.5"
 aiocron = "^1.8"
