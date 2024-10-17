@@ -19,7 +19,7 @@ pydantic = "^2.9.2"
 pydantic-settings = "^2.5.2"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.21.6"}
 sqlalchemy = "^2.0.35"
-uvicorn = "^0.31.0"
+uvicorn = "^0.32.0"
 aiohttp = "^3.10.10"
 aiocron = "^1.8"
 
