@@ -1269,13 +1269,13 @@ six = ">=1.13.0"
 
 [[package]]
 name = "litestar"
-version = "2.12.1"
+version = "2.13.0"
 description = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "litestar-2.12.1-py3-none-any.whl", hash = "sha256:74915e3731c200caa099c416a1c3b3079ffacdd6e6393974e0284f8919606f9c"},
-    {file = "litestar-2.12.1.tar.gz", hash = "sha256:d2cc43157060a06dac8a77e9dc6ba2936238beada61e272e8842c21fca23fcee"},
+    {file = "litestar-2.13.0-py3-none-any.whl", hash = "sha256:a40765644115639015a54e8cd7e7bdbe597a58d3f2d8f6d21afe9f343df43916"},
+    {file = "litestar-2.13.0.tar.gz", hash = "sha256:51a3ab60b7bc8de2c126f3ad907c2ba6f9d22194bdf1be9df52253e57ed80f0e"},
 ]
 
 [package.dependencies]
@@ -1291,6 +1291,7 @@ fast-query-parsers = {version = ">=1.0.2", optional = true, markers = "extra == 
 httpx = ">=0.22"
 jinja2 = {version = ">=3.1.2", optional = true, markers = "extra == \"full\""}
 jsbeautifier = {version = "*", optional = true, markers = "extra == \"full\""}
+litestar-htmx = ">=0.3.0"
 mako = {version = ">=1.2.4", optional = true, markers = "extra == \"full\""}
 minijinja = {version = ">=1.0.0", optional = true, markers = "extra == \"full\""}
 msgspec = ">=0.18.2"
@@ -1319,6 +1320,7 @@ brotli = ["brotli"]
 cli = ["jsbeautifier", "uvicorn[standard]", "uvloop (>=0.18.0)"]
 cryptography = ["cryptography"]
 full = ["advanced-alchemy (>=0.2.2)", "annotated-types", "attrs", "brotli", "cryptography", "email-validator", "fast-query-parsers (>=1.0.2)", "jinja2", "jinja2 (>=3.1.2)", "jsbeautifier", "mako (>=1.2.4)", "minijinja (>=1.0.0)", "opentelemetry-instrumentation-asgi", "piccolo", "picologging", "prometheus-client", "pydantic", "pydantic-extra-types", "pyjwt (>=2.9.0)", "redis[hiredis] (>=4.4.4)", "structlog", "uvicorn[standard]", "uvloop (>=0.18.0)"]
+htmx = ["litestar-htmx (>=0.3.0)"]
 jinja = ["jinja2 (>=3.1.2)"]
 jwt = ["cryptography", "pyjwt (>=2.9.0)"]
 mako = ["mako (>=1.2.4)"]
@@ -1332,6 +1334,17 @@ redis = ["redis[hiredis] (>=4.4.4)"]
 sqlalchemy = ["advanced-alchemy (>=0.2.2)"]
 standard = ["fast-query-parsers (>=1.0.2)", "jinja2", "jsbeautifier", "uvicorn[standard]", "uvloop (>=0.18.0)"]
 structlog = ["structlog"]
+
+[[package]]
+name = "litestar-htmx"
+version = "0.4.0"
+description = "HTMX Integration for Litesstar"
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "litestar_htmx-0.4.0-py3-none-any.whl", hash = "sha256:81e784b91a5a5ca6061d86271e026de7d785d90a4367c6b9c8f0c724b26986c4"},
+    {file = "litestar_htmx-0.4.0.tar.gz", hash = "sha256:b5f53aa25b665d673fe2e9d835ff711f7fe28fa8f57b87b61e4f6317b983632e"},
+]
 
 [[package]]
 name = "mako"
@@ -2916,4 +2929,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "6a907c71fed4f7f31cd77f4d4e7885d0f2f2911dd6581fdfb7d5ab1a97dc5767"
+content-hash = "32ff49318a6b381445f33dcf25275be7d027df38dbaa2ed6f0073614e78666c5"
