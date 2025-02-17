@@ -22,21 +22,22 @@ uuid = ["uuid-utils (>=0.6.1)"]
 
 [[package]]
 name = "aiocron"
-version = "1.8"
+version = "2.1"
 description = "Crontabs for asyncio"
 optional = false
-python-versions = "*"
+python-versions = ">=3.9"
 files = [
-    {file = "aiocron-1.8-py3-none-any.whl", hash = "sha256:b6313214c311b62aa2220e872b94139b648631b3103d062ef29e5d3230ddce6d"},
-    {file = "aiocron-1.8.tar.gz", hash = "sha256:48546513faf2eb7901e65a64eba7b653c80106ed00ed9ca3419c3d10b6555a01"},
+    {file = "aiocron-2.1-py3-none-any.whl", hash = "sha256:b2612b67c552ebc4d24f524fe0316dec30b44f3c5a1d9a3697493d840aa7a5de"},
+    {file = "aiocron-2.1.tar.gz", hash = "sha256:1bb65a36aee137e8833592783956e0c7dc478bc3e9273fc2841d5d0c6045e4d2"},
 ]
 
 [package.dependencies]
-croniter = "*"
-tzlocal = "*"
+cronsim = ">=2.6"
+python-dateutil = ">=2.9.0"
+tzlocal = ">=5.2"
 
 [package.extras]
-test = ["coverage"]
+test = ["coverage (>=7.6.1)", "pytest (>=8.3.3)", "pytest-cov (>=5.0.0)", "tox (>=4.21.1)", "tox-uv (>=1.13.0)"]
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -609,19 +610,15 @@ files = [
 ]
 
 [[package]]
-name = "croniter"
-version = "2.0.5"
-description = "croniter provides iteration for datetime object with cron like format"
+name = "cronsim"
+version = "2.6"
+description = "Cron expression parser and evaluator"
 optional = false
-python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.6"
+python-versions = ">=3.8"
 files = [
-    {file = "croniter-2.0.5-py2.py3-none-any.whl", hash = "sha256:fdbb44920944045cc323db54599b321325141d82d14fa7453bc0699826bbe9ed"},
-    {file = "croniter-2.0.5.tar.gz", hash = "sha256:f1f8ca0af64212fbe99b1bee125ee5a1b53a9c1b433968d8bca8817b79d237f3"},
+    {file = "cronsim-2.6-py3-none-any.whl", hash = "sha256:5e153ff8ed64da7ee8d5caac470dbeda8024ab052c3010b1be149772b4801835"},
+    {file = "cronsim-2.6.tar.gz", hash = "sha256:5aab98716ef90ab5ac6be294b2c3965dbf76dc869f048846a0af74ebb506c10d"},
 ]
-
-[package.dependencies]
-python-dateutil = "*"
-pytz = ">2021.1"
 
 [[package]]
 name = "cryptography"
@@ -3155,4 +3152,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d43aa3f654a6e2e2613ddbbfd96b7d1078508fc23eb26257ec9b38877d0e5307"
+content-hash = "6a7b50ca1d67ede3c617199fc28540fefd454a7f0816e6b8a0a4f064b0c02f20"
