@@ -2732,28 +2732,28 @@ docstring-parser = ">=0.12"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.24.0"
+version = "0.24.2"
 description = "Easy async ORM for python, built with relations in mind"
 optional = false
-python-versions = "<4.0,>=3.9"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "tortoise_orm-0.24.0-py3-none-any.whl", hash = "sha256:ee3b72b226767293b24c5c4906ae5f027d7cc84496cd503352c918564b4fd687"},
-    {file = "tortoise_orm-0.24.0.tar.gz", hash = "sha256:ae0704a93ea27931724fc899e57268c8081afce3b32b110b00037ec206553e7d"},
+    {file = "tortoise_orm-0.24.2-py3-none-any.whl", hash = "sha256:d2381b26f48bd2f5c5d978ddf9bb40b2b81b2dbb78dab6a17882a156de8b5c62"},
+    {file = "tortoise_orm-0.24.2.tar.gz", hash = "sha256:83d2373efafc1c5d668c3c5bd4e1e7f4a219526e850909ffe88f184da3808fdb"},
 ]
 
 [package.dependencies]
-aiosqlite = ">=0.16.0,<0.21.0"
+aiosqlite = ">=0.16.0,<1.0.0"
 asyncpg = {version = "*", optional = true, markers = "extra == \"asyncpg\""}
-iso8601 = ">=2.1.0,<3.0.0"
-pypika-tortoise = ">=0.5.0,<0.6.0"
+iso8601 = {version = ">=2.1.0,<3.0.0", markers = "python_version < \"4.0\""}
+pypika-tortoise = {version = ">=0.5.0,<1.0.0", markers = "python_version < \"4.0\""}
 pytz = "*"
 
 [package.extras]
 accel = ["ciso8601 ; sys_platform != \"win32\" and implementation_name == \"cpython\"", "orjson", "uvloop ; sys_platform != \"win32\" and implementation_name == \"cpython\""]
 aiomysql = ["aiomysql"]
-asyncmy = ["asyncmy (>=0.2.8,<0.3.0)"]
-asyncodbc = ["asyncodbc (>=0.1.1,<0.2.0)"]
+asyncmy = ["asyncmy (>=0.2.8,<1.0.0) ; python_version < \"4.0\""]
+asyncodbc = ["asyncodbc (>=0.1.1,<1.0.0) ; python_version < \"4.0\""]
 asyncpg = ["asyncpg"]
 psycopg = ["psycopg[binary,pool] (>=3.0.12,<4.0.0)"]
 
@@ -3258,4 +3258,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "3c0d69b07ce672e91596209ba660ef0dbd3d539438344ebf57ccedb97c3d0345"
+content-hash = "efc6e67c5ee541deaf97d0336f2499e535c3932289a243c07aa69937e1963de6"
