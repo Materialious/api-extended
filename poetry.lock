@@ -2395,14 +2395,14 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pypika-tortoise"
-version = "0.5.0"
+version = "0.6.1"
 description = "Forked from pypika and streamline just for tortoise-orm"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pypika_tortoise-0.5.0-py3-none-any.whl", hash = "sha256:dbdc47eb52ce17407b05ce9f8560ce93b856d7b28beb01971d956b017846691f"},
-    {file = "pypika_tortoise-0.5.0.tar.gz", hash = "sha256:ed0f56761868dc222c03e477578638590b972280b03c7c45cd93345b18b61f58"},
+    {file = "pypika_tortoise-0.6.1-py3-none-any.whl", hash = "sha256:da15886f37b347e71f0869f9e4ee2f9259e6bb57455b45299c6c23d7927cbb6e"},
+    {file = "pypika_tortoise-0.6.1.tar.gz", hash = "sha256:36ec2c88c255b9ed7ef49a6068cdeac10dafd4ddfeb828205d3afc092507fc3a"},
 ]
 
 [[package]]
@@ -2740,21 +2740,21 @@ docstring-parser = ">=0.12"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.25.0"
+version = "0.25.1"
 description = "Easy async ORM for python, built with relations in mind"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "tortoise_orm-0.25.0-py3-none-any.whl", hash = "sha256:b853acae52bc309800ec2954f3e261746cdac7e6b0e0a96ba20393dcb100a357"},
-    {file = "tortoise_orm-0.25.0.tar.gz", hash = "sha256:7d0aaf31c33a25a9efad8f94b44ee50febae15889f4da119cf184ffe98002673"},
+    {file = "tortoise_orm-0.25.1-py3-none-any.whl", hash = "sha256:df0ef7e06eb0650a7e5074399a51ee6e532043308c612db2cac3882486a3fd9f"},
+    {file = "tortoise_orm-0.25.1.tar.gz", hash = "sha256:4d5bfd13d5750935ffe636a6b25597c5c8f51c47e5b72d7509d712eda1a239fe"},
 ]
 
 [package.dependencies]
 aiosqlite = ">=0.16.0,<1.0.0"
 asyncpg = {version = "*", optional = true, markers = "extra == \"asyncpg\""}
 iso8601 = {version = ">=2.1.0,<3.0.0", markers = "python_version < \"4.0\""}
-pypika-tortoise = {version = ">=0.5.0,<1.0.0", markers = "python_version < \"4.0\""}
+pypika-tortoise = {version = ">=0.6.1,<1.0.0", markers = "python_version < \"4.0\""}
 pytz = "*"
 
 [package.extras]
@@ -3281,4 +3281,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "c66c32e0b57cf3e02a8de7aa268244c0c909c162ad6927f53b96b1e640e48eaf"
+content-hash = "c5150d2bfb662426b6b579d4fa0a8cc5415807917415fa3747fe1e0878744f14"
