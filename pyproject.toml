@@ -16,7 +16,7 @@ server = "run:main"
 python = "^3.11"
 litestar = {extras = ["full"], version = "^2.16.0"}
 pydantic = "^2.11.7"
-pydantic-settings = "^2.10.0"
+pydantic-settings = "^2.10.1"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.25.1"}
 sqlalchemy = "^2.0.41"
 uvicorn = "^0.35.0"
