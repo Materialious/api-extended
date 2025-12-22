@@ -2452,14 +2452,14 @@ tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pypika-tortoise"
-version = "0.6.1"
+version = "0.6.3"
 description = "Forked from pypika and streamline just for tortoise-orm"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "pypika_tortoise-0.6.1-py3-none-any.whl", hash = "sha256:da15886f37b347e71f0869f9e4ee2f9259e6bb57455b45299c6c23d7927cbb6e"},
-    {file = "pypika_tortoise-0.6.1.tar.gz", hash = "sha256:36ec2c88c255b9ed7ef49a6068cdeac10dafd4ddfeb828205d3afc092507fc3a"},
+    {file = "pypika_tortoise-0.6.3-py3-none-any.whl", hash = "sha256:762e508093f4d73d3654cdde5bce8f92f8f41d999993c44d972d4f1703a663df"},
+    {file = "pypika_tortoise-0.6.3.tar.gz", hash = "sha256:6e17f00e77e78468836cb5c63eb6dc01445f83b1167e4f29f1c678949179c079"},
 ]
 
 [[package]]
@@ -2797,21 +2797,21 @@ docstring-parser = ">=0.12"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.25.1"
+version = "0.25.2"
 description = "Easy async ORM for python, built with relations in mind"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "tortoise_orm-0.25.1-py3-none-any.whl", hash = "sha256:df0ef7e06eb0650a7e5074399a51ee6e532043308c612db2cac3882486a3fd9f"},
-    {file = "tortoise_orm-0.25.1.tar.gz", hash = "sha256:4d5bfd13d5750935ffe636a6b25597c5c8f51c47e5b72d7509d712eda1a239fe"},
+    {file = "tortoise_orm-0.25.2-py3-none-any.whl", hash = "sha256:cf0c9148cb83134a8b2299c30658bd0d9f757a7aef9699e0125a151d58e4f9c4"},
+    {file = "tortoise_orm-0.25.2.tar.gz", hash = "sha256:7e09547846eb27664b402a3b095e1d15ab6406ba56641fad260cf2877ca8d4c5"},
 ]
 
 [package.dependencies]
 aiosqlite = ">=0.16.0,<1.0.0"
 asyncpg = {version = "*", optional = true, markers = "extra == \"asyncpg\""}
 iso8601 = {version = ">=2.1.0,<3.0.0", markers = "python_version < \"4.0\""}
-pypika-tortoise = {version = ">=0.6.1,<1.0.0", markers = "python_version < \"4.0\""}
+pypika-tortoise = ">=0.6.3,<1.0.0"
 pytz = "*"
 
 [package.extras]
@@ -3338,4 +3338,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "be347022fe11be9004e89dfe7f2ad26cdbd4bb6d6efc54291eaddb8b4f40195a"
+content-hash = "ca475612dc0ce1d7dbce1e675e86ba2bdfe84da28eefc59a06ec81bde4e171f5"
