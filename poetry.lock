@@ -2493,18 +2493,6 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
-name = "pytz"
-version = "2024.1"
-description = "World timezone definitions, modern and historical"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "pytz-2024.1-py2.py3-none-any.whl", hash = "sha256:328171f4e3623139da4983451950b28e95ac706e13f3f2630a879749e7a8b319"},
-    {file = "pytz-2024.1.tar.gz", hash = "sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"},
-]
-
-[[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
@@ -2799,14 +2787,14 @@ docstring-parser = ">=0.12"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.25.3"
+version = "1.0.0"
 description = "Easy async ORM for python, built with relations in mind"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "tortoise_orm-0.25.3-py3-none-any.whl", hash = "sha256:3c52a53c41f4137aee9ffb3f3de01f30b52ad7767157f9bd9586a910fe839ca3"},
-    {file = "tortoise_orm-0.25.3.tar.gz", hash = "sha256:b6dedd388393624628ec46228c93df361533ceb3925986fa2d1d22debc838a7d"},
+    {file = "tortoise_orm-1.0.0-py3-none-any.whl", hash = "sha256:4f5b609f6e41914a64c9a80233fc5d2e612e7eb1c7b880627d67cd0710ee9bb5"},
+    {file = "tortoise_orm-1.0.0.tar.gz", hash = "sha256:d66188f70c74fd7ea24f294f42f0b16ba9a2b6cdd95d0fcb2fb6cb41759947f4"},
 ]
 
 [package.dependencies]
@@ -2815,15 +2803,16 @@ anyio = "*"
 asyncpg = {version = "*", optional = true, markers = "extra == \"asyncpg\""}
 iso8601 = {version = ">=2.1.0,<3.0.0", markers = "python_version < \"4.0\""}
 pypika-tortoise = ">=0.6.3,<1.0.0"
-pytz = "*"
 
 [package.extras]
 accel = ["ciso8601 ; sys_platform != \"win32\" and implementation_name == \"cpython\"", "orjson", "uvloop ; sys_platform != \"win32\" and implementation_name == \"cpython\""]
 aiomysql = ["aiomysql"]
-asyncmy = ["asyncmy (>=0.2.8,<1.0.0) ; python_version < \"4.0\""]
+asyncmy = ["asyncmy (>=0.2.11,<1.0.0)"]
 asyncodbc = ["asyncodbc (>=0.1.1,<1.0.0) ; python_version < \"4.0\""]
 asyncpg = ["asyncpg"]
+ipython = ["ipython", "nest-asyncio (>=1.6.0)"]
 psycopg = ["psycopg[binary,pool] (>=3.0.12,<4.0.0)"]
+ptpython = ["ptpython (>=3.0.0)"]
 
 [[package]]
 name = "typing-extensions"
@@ -3341,4 +3330,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "1d0e00d15dd062d3411520a769af9f31a1ec4a2da3bebb609a0c017f25bef970"
+content-hash = "deb7108431b8dd7db1f964e542afa6f5746eafe50d117e8a732c7e76bacdcfcc"
